@@ -1,0 +1,44 @@
+Sub trans()
+'
+'trans
+'
+'
+    Dim xWs As Worksheet
+    Dim strFullname As String
+    Dim strPath As String
+    Dim strName As String
+    Dim lastRow As Integer
+    strPath = "D:\会計\work_files\"
+    For Each xWs In Application.ActiveWorkbook.Worksheets
+        xWs.Range("2:2").Replace What:=vbLf, Replacement:="", LookAt:=xlPart, _
+            SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+            ReplaceFormat:=False
+        xWs.Range("2:2").Replace What:=vbCr, Replacement:="", LookAt:=xlPart, _
+            SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+            ReplaceFormat:=False
+        xWs.Range("2:2").Replace What:=vbCrLf, Replacement:="", LookAt:=xlPart, _
+            SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+            ReplaceFormat:=False
+        xWs.Range("2:2").Replace What:=vbNewLine, Replacement:="", LookAt:=xlPart, _
+            SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+            ReplaceFormat:=False
+'        xWs.Range("2:2").Replace(String, vbLf, "")
+'        xWs.Range("2:2").Replace(String, vbCr, "")
+'        xWs.Range("2:2").Replace(String, vbCrLf, "")
+'        xWs.Range("2:2").Replace(String, vbNewLine, "")
+        xWs.activate
+        Let lastRow = xWs.Cells(Rows.Count, 2).End(3).Row + 3
+        xWs.Range("E3:ZZ"&lastRow).Select
+'        Cells.Select
+        Selection.NumberFormat = "0"
+    Next
+    For Each xWs In Application.ActiveWorkbook.Worksheets
+        strName = xWs.name
+        strFullname = strPath + strName +".csv"
+        Application.DisplayAlerts = False
+        xWs.Copy
+        Activeworkbook.SaveAs Filename: = strFullname, FileFormat: = xlCSVUTF8
+        ActiveWorkbook.Close
+        Application.DisplayAlerts = True
+    Next
+End Sub
